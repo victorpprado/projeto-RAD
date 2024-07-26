@@ -19,7 +19,7 @@ connection.close()
 titulos = ['ID', 'Nome', 'CPF', 'Disciplina']
 
 def abrir_janela():
-    sg.theme('DarkTeal2')
+    sg.theme('DarkBlue4')
 
     layout = [
         [sg.Text(titulos[1]), sg.Input(size = 30, key= titulos[1])],
@@ -50,14 +50,41 @@ while True:
         cursor.execute('SELECT * FROM alunos')
         dados = cursor.fetchall()
         connection.close()
+        # Requisitando o banco de dados para atualizar os dados da tabela #
+        janela['tabela'].update(values=dados)
         # Limpando os inputs #
         for i in range(1, 4):
             janela[titulos[i]].update(value='')
 
+    # Edição dos objetos já salvos #
     elif event == 'Editar':
-        ...
+        if values['tabela'] == []:
+            sg.popup('Favor selecionar uma linha')
+        else:
+            # Preenchendo os inputs com os dados do objeto selecionado # 
+            for i in range(1, 4):
+                janela[titulos[i]].update(value=dados[values['tabela'][0]][i])    
+            # Habilitando o botão 'Salvar' #
+            janela['Salvar'].update(disabled=False)
 
     elif event == 'Salvar':
+        # Reconectando ao banco de dados #
+        connection = sqlite3.connect('alunos.db')
+        cursor = connection.cursor()
+        # Editando o objeto no banco de dados #
+        cursor.execute('UPDATE alunos SET (nome, cpf, disciplina) = (?, ?, ?) WHERE ID = ?', (values['Nome'], values['CPF'], values['Disciplina'], dados[values['tabela'][0]][0]))
+        connection.commit()
+        # Atualizando a tabela com os dados do banco de dados #
+        cursor.execute('SELECT * FROM alunos')
+        dados = cursor.fetchall()
+        connection.close()
+        # Requisitando o banco de dados para atualizar os dados da tabela #
+        janela['tabela'].update(values=dados)
+        # Limpando os inputs #
+        for i in range(1, 4):
+            janela[titulos[i]].update(value='')
+
+    elif event == 'Excluir':
         ...
 
     elif event == sg.WIN_CLOSED:
