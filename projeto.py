@@ -48,7 +48,7 @@ def abrir_janela():
     layout = [
         [sg.Text(titulos[1]), sg.Input(size= 50 ,key= titulos[1])],
         [sg.Text(titulos[2]), sg.Input(size = 50, key= titulos[2])],
-        [sg.Text(titulos[3]), sg.Combo(['Letras', 'Filosofia', 'Ciências Sociais'], key= titulos[3])],
+        [sg.Text(titulos[3]), sg.Combo(['Letras', 'Linguística', 'Filosofia', 'Ciências Sociais', 'Biologia Vegetal', 'Biologia Animal', 'Oceanografia', 'Psicologia', 'Geografia'], key= titulos[3])],
         [sg.Text(titulos[4]), sg.Input(size = 50, key= titulos[4])],
         [sg.Button('Adicionar'), sg.Button('Editar'), sg.Button('Salvar', disabled=True), sg.Button('Excluir')],
         [sg.Table(dados, titulos ,key='tabela')],
