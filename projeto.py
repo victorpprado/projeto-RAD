@@ -1,6 +1,8 @@
 import PySimpleGUI as sg
 import sqlite3
 from fpdf import FPDF
+import datetime
+
 
 class PDF(FPDF):
     def header(self):
@@ -125,6 +127,32 @@ while True:
             janela['tabela'].update(values=dados)
 
     elif event == 'Declaração de Matrícula':
+        match datetime.date.today().month:
+            case 1:
+                month = 'Janeiro'
+            case 2:
+                month = 'Fevereiro'
+            case 3:
+                month = 'Março'
+            case 4:
+                month = 'Abril'
+            case 5:
+                month = 'Maio'
+            case 6:
+                month = 'Junho'
+            case 7:
+                month = 'Julho'
+            case 8:
+                month = 'Agosto'
+            case 9:
+                month = 'Setembro'
+            case 10:
+                month = 'Outubro'
+            case 11:
+                month = 'Novembro'
+            case 12:
+                month = 'Dezembro'
+
         if values['tabela'] == []:
             sg.popup('Favor selecionar um Discente')
         else:
@@ -138,7 +166,7 @@ while True:
             pdf.ln(10)
             pdf.multi_cell(190, 10, f'Declaro também que o discente ingressou no semestre {discente[4]} e tem previsão de conclusão em 2 anos.')
             pdf.ln(60)
-            pdf.cell(180, 10, 'Vitória, ES / 01 de Janeiro de 2024', 0, 0, 'R')
+            pdf.cell(180, 10, f'Vitória, {datetime.date.today().day} de {month} de {datetime.date.today().year}', 0, 0, 'R')
             
             pdf.output(f'Declaração de {discente[1]}.pdf', 'F')
 
